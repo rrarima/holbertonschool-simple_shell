@@ -1,26 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "main.h"
+
+extern char **environ;
 
 char *_getenv(const char *name)
 {
-	int i = 0;
-	int len = strlen(name);
+	int i, j;
+	int status;
 
+	i = 0;
 	while (environ[i] != NULL)
 	{
-		if (strncmp(name, environ[i], len) ==0)
+		status = 1;
+		j = 0;
+		while (environ[i][j] != '=')
 		{
-			return (environ[i]);
+			if (name[j] != environ[i][j])
+			{
+				status = 0;
+				break;
+			}
+			j = j + 1;
 		}
-		i++;
+		if (status)
+		{
+			return (&environ[i][j + 1]);
+		}
+		i = i + 1;
 	}
 	return (NULL);
 }
 
 int main ()
 {
-	printf("HOME:%s\n", _getenv("HOME"));
+	printf("This is our _getenv: %s\n", _getenv("HOME"));
+	printf("This is the actual getenv: %s\n", getenv("HOME"));
 	return (0);
 }
