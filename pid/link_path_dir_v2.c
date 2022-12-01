@@ -3,7 +3,7 @@
 
 int main(void)
 {
-	DIR *dir = opendir(".");;
+	DIR *dir = opendir("PATH=");
 	struct dirent *entity;
 	if (dir != NULL)
 	{
