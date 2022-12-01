@@ -5,7 +5,7 @@
 #include <unistd.h>
 #include <string.h>
 
-int main(int ac, char **av, char **env)
+int main(__attribute__((unused))int ac, char **av, char **env)
 {
 	size_t n = 20;
 	size_t i;
