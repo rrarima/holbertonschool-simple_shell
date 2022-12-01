@@ -15,7 +15,7 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 	lineptr = NULL;
 	while (1)
 	{
-		printf("");
+		printf(" ");
 		if (getline(&lineptr, &n, stdin) == -1)
 		{
 			break;
