@@ -11,7 +11,6 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 {
 	size_t n = 20;
 	size_t i;
-	size_t j;
 	char *lineptr;
 	char *token;
 
@@ -44,13 +43,6 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 		{
 			wait(NULL);
 		}
-		j = 0;
-		while (env[j] != NULL)
-		{
-			printf("\n%s", env[j]);
-			j = j + 1;
-		}
-		printf("\n");
 	}
 	return (0);
 }
