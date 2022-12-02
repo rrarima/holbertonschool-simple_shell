@@ -13,6 +13,7 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 	size_t i;
 	char *lineptr;
 	char *token;
+	pid_t child_pid;
 
 	lineptr = NULL;
 	while (1)
@@ -31,7 +32,8 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 			i = i + 1;
 		}
 		av[i] = NULL;
-		if (fork() == 0)
+		child_pid = fork();
+		if (child_pid == 0)
 		{
 			if (execve(av[0], av, env) == -1)
 			{
@@ -41,7 +43,7 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 		}
 		else
 		{
-			wait(NULL);
+			waitpid(child_pid, NULL, 0);
 		}
 	}
 	return (0);
