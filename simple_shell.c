@@ -1,13 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <string.h>
+#include "main.h"
 
 extern char **environ;
 
-int main(__attribute__((unused))int ac, char **av, char **env)
+int main(__attribute__((unused))int argc, char *argv[])
 {
 	size_t n = 20;
 	size_t i;
@@ -27,15 +22,24 @@ int main(__attribute__((unused))int ac, char **av, char **env)
 		i = 0;
 		while (i < n && token != NULL)
 		{
-			av[i] = token;
+			argv[i] = token;
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
 		}
-		av[i] = NULL;
+		if (strncmp(argv[0], "exit", 4) == 0)
+		{
+			return (0);
+		}
+		argv[i] = NULL;
 		child_pid = fork();
 		if (child_pid == 0)
 		{
-			if (execve(av[0], av, env) == -1)
+			if (strcmp(argv[0], "env") == 0)
+				{
+					print_env();
+					return (0);
+				}
+			if (execve(argv[0], argv, environ) == -1)
 			{
 				perror("./shell");
 			}
