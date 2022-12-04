@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -g -Wall -Werror -Wextra -pedantic
+CFLAGS = gcc -Wall -Werror -Wextra -pedantic -std=gnu89
 
 hsh:
 	$(CC) $(CFLAGS) *.c -o hsh
