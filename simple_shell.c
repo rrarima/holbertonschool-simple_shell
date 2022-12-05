@@ -1,23 +1,33 @@
 #include "main.h"
 
-extern char **environ;
-
-int main(__attribute__((unused))int argc, char *argv[])
+int main()
 {
-	size_t n = 20;
-	size_t i;
-	char *lineptr;
-	char *token;
+	size_t n = 0, i, num_of_tokens = 0;
+	char *lineptr = NULL, *tmp = NULL, *token;
 	pid_t child_pid;
+	ssize_t chars_read;
+	int status;
+	char **argv;
 
-	lineptr = NULL;
 	while (1)
 	{
-		printf("#cisfun$ ");
-		if (getline(&lineptr, &n, stdin) == -1)
+		if (isatty(STDIN_FILENO) == 1)
+		{
+			printf("#cisfun$ ");
+		}
+		chars_read = getline(&lineptr, &n, stdin);
+		if (chars_read == -1)
 		{
 			break;
 		}
+		/*check last char of lineptr*/
+		tmp = malloc(sizeof(tmp) * chars_read);
+		if (tmp == NULL)
+		{
+			free(lineptr);
+			return (-1);
+		}
+		strcpy(tmp, lineptr);
 		token = strtok(lineptr, " \t\n\r");
 		i = 0;
 		while (i < n && token != NULL)
@@ -25,6 +35,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 			argv[i] = token;
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
+			num_of_tokens = num_of_tokens + 1;
 		}
 		if (strncmp(argv[0], "exit", 4) == 0)
 		{
@@ -32,7 +43,11 @@ int main(__attribute__((unused))int argc, char *argv[])
 		}
 		argv[i] = NULL;
 		child_pid = fork();
-		if (child_pid == 0)
+		if (child_pid < 0)
+		{
+			exit(0);
+		}
+		else if (child_pid == 0)
 		{
 			if (strcmp(argv[0], "env") == 0)
 				{
@@ -45,10 +60,9 @@ int main(__attribute__((unused))int argc, char *argv[])
 			}
 			exit(0);
 		}
-		else
-		{
-			waitpid(child_pid, NULL, 0);
-		}
+		wait(&status);
 	}
+	free(tmp);
+	free(lineptr);
 	return (0);
 }
