@@ -1,0 +1,32 @@
+.TH man 1 "November 2022" "V1.0" "sh man page"
+.SH NAME
+simple shell - a simplified version of the standard command language interpreter, shell.
+.SH SYNOPSIS
+.P
+[command_file [argument...]]
+.SH DESCRIPTION
+The simple shell  is a command language interpreter. It reads and executes from a command line string, the standard input, or a specified file.
+.SH ENVIRONMENT VARIABLES
+.B ENV
+.P
+When invoked, is subjected to parameter expansion. This variable stores a strin g of arrays (list) of environment variables in the format of: VARIABLE=value.
+.B PATH
+.P
+Specifies a set of directories where executable programs are located.
+.PWD
+.P
+Represents the absolute pathname of the current working directory.
+.SH RETURN VALUE
+Returns 0 on success and -1 on failure.
+.SH EXIT STATUS
+.SH EXAMPLES
+
+.SH SEE ALSO
+.B
+echo(1), exit(1), sh(1), wait(3)
+.SH NOTES
+This implementation of the shell does not handle all builtin commands.
+.SH BUGS
+No known bugs
+.SH AUTHORS
+Eps Rarima and Jenny Nguyen
