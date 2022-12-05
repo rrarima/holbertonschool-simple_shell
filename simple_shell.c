@@ -1,13 +1,12 @@
 #include "main.h"
 
-int main()
+int main(__attribute__((unused))int argc, char *argv[])
 {
 	size_t n = 0, i, num_of_tokens = 0;
 	char *lineptr = NULL, *tmp = NULL, *token;
 	pid_t child_pid;
 	ssize_t chars_read;
 	int status;
-	char **argv;
 
 	while (1)
 	{
