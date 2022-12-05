@@ -19,29 +19,35 @@ int main(__attribute__((unused))int argc, char *argv[])
 		{
 			break;
 		}
+		free(lineptr);
 		/*check last char of lineptr*/
 		tmp = malloc(sizeof(tmp) * chars_read);
 		if (tmp == NULL)
 		{
-			free(lineptr);
 			return (-1);
+			free(lineptr);
 		}
 		strcpy(tmp, lineptr);
 		token = strtok(lineptr, " \t\n\r");
 		i = 0;
+		free(lineptr);
 		while (i < n && token != NULL)
 		{
 			argv[i] = token;
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
+			free(lineptr);
 		}
+		free(lineptr);
 		if (strncmp(argv[0], "exit", 4) == 0)
 		{
 			return (0);
+			free(lineptr);
 		}
 		argv[i] = NULL;
 		child_pid = fork();
+		free(lineptr);
 		if (child_pid < 0)
 		{
 			exit(0);
@@ -60,6 +66,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 			exit(0);
 		}
 		wait(&status);
+		free(lineptr);
 	}
 	free(tmp);
 	free(lineptr);
