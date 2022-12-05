@@ -1,7 +1,5 @@
 #include "main.h"
 
-extern char **environ;
-
 int main(__attribute__((unused))int argc, char *argv[])
 {
 	size_t n = 20;
