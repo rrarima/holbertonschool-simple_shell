@@ -2,13 +2,11 @@
 
 int main(__attribute__((unused))int argc, char *argv[])
 {
-	size_t n = 20;
-	size_t i;
-	char *lineptr;
+	size_t n = 0, i;
+	char *lineptr = NULL;
 	char *token;
 	pid_t child_pid;
 
-	lineptr = NULL;
 	while (1)
 	{
 		printf("#cisfun$ ");
