@@ -1,18 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-typedef struct listpathdir_s
-{
-	char *dir;
-	struct listpathdir_s *next;
-} listpathdir_t;
-
-extern char **environ;
-
-char **split_delim(char *, const char *);
-char * _getenv(const char *name);
-
+#include "main.h"
 
 listpathdir_t *ll_path(char *PATH)
 {
@@ -35,34 +21,6 @@ listpathdir_t *ll_path(char *PATH)
 		i = i + 1;
 	}
 	return (head);
-}
-
-char *_getenv(const char *name)
-{
-	int i, j;
-	int status;
-
-	i = 0;
-	while (environ[i] != NULL)
-	{
-		status = 1;
-		j = 0;
-		while (environ[i][j] != '=')
-		{
-			if (name[j] != environ[i][j])
-			{
-				status = 0;
-				break;
-			}
-			j = j + 1;
-		}
-		if (status)
-		{
-			return (&environ[i][j + 1]);
-		}
-		i = i + 1;
-	}
-	return (NULL);
 }
 
 char **split_delim(char *s, const char *delim)
