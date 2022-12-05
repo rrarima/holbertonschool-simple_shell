@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-extern char **environ;
+#include "main.h"
 
 char *_getenv(const char *name)
 {
@@ -30,11 +26,4 @@ char *_getenv(const char *name)
 		i = i + 1;
 	}
 	return (NULL);
-}
-
-int main ()
-{
-	printf("This is our _getenv: %s\n", _getenv("HOME"));
-	printf("This is the actual getenv: %s\n", getenv("HOME"));
-	return (0);
 }
