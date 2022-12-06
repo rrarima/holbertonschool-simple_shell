@@ -19,7 +19,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		if (chars_read == -1)
 		{
 			free(lineptr);
-			return (-1);
+			return (1);
 		}
 		if (lineptr[chars_read - 1] == '\n')
 		{
@@ -37,13 +37,13 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		if (strncmp(lineptr, "exit", 4) == 0)
 		{
 			free(lineptr);
-			return (0);
+			exit(EXIT_SUCCESS);
 		}
 		args[i] = NULL;
 		child_pid = fork();
 		if (child_pid < 0)
 		{
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 		else if (child_pid == 0)
 		{
@@ -57,7 +57,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 				free(lineptr);
 				perror("./shell");
 			}
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 		wait(&status);
 	}
