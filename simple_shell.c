@@ -1,12 +1,13 @@
 #include "main.h"
 
-int main(__attribute__((unused))int argc, char *argv[])
+int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 {
 	size_t n = 0, i, num_of_tokens = 0;
 	char *lineptr, *tmp, *token;
 	pid_t child_pid;
 	ssize_t chars_read = 0;
 	int status;
+	char *args[64];
 
 	while (1)
 	{
@@ -18,10 +19,13 @@ int main(__attribute__((unused))int argc, char *argv[])
 		if (chars_read == -1)
 		{
 			free(lineptr);
-			return (0);
+			return (-1);
 		}
-
-		tmp = malloc(sizeof(tmp) * chars_read);
+		if (lineptr[chars_read - 1] == '\n')
+		{
+			lineptr[chars_read - 1] = '\0';
+		}
+		tmp = malloc(sizeof(*tmp) * chars_read);
 		if (tmp == NULL)
 		{
 			free(lineptr);
@@ -32,7 +36,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 		i = 0;
 		while (i < n && token != NULL)
 		{
-			argv[i] = token;
+			args[i] = token;
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
@@ -43,7 +47,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 			free(tmp);
 			return (0);
 		}
-		argv[i] = NULL;
+		args[i] = NULL;
 		child_pid = fork();
 		if (child_pid < 0)
 		{
@@ -56,7 +60,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 					print_env();
 					return (0);
 				}
-			if (execve(argv[0], argv, environ) == -1)
+			if (execve(args[0], args, environ) == -1)
 			{
 				perror("./shell");
 			}
