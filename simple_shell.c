@@ -18,7 +18,6 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		chars_read = getline(&lineptr, &n, stdin);
 		if (chars_read == -1)
 		{
-			free(lineptr);
 			break;
 		}
 		if (lineptr[chars_read - 1] == '\n')
