@@ -3,7 +3,7 @@
 int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 {
 	size_t n = 0, i, num_of_tokens = 0;
-	char *lineptr, *token;
+	char *lineptr = NULL, *token = NULL;
 	pid_t child_pid;
 	ssize_t chars_read = 0;
 	int status;
@@ -19,7 +19,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		if (chars_read == -1)
 		{
 			free(lineptr);
-			return (-1);
+			break;
 		}
 		if (lineptr[chars_read - 1] == '\n')
 		{
