@@ -84,6 +84,7 @@ The thought process of how the shell works.
 ​
 To run this project, you will need to add the following environment variables to your .env file
 ​
+
 `0. README, man, AUTHORS`
 ```javascript
 Write a README
