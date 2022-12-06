@@ -3,7 +3,7 @@
 int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 {
 	size_t n = 0, i, num_of_tokens = 0;
-	char *lineptr, *tmp, *token;
+	char *lineptr, *token;
 	pid_t child_pid;
 	ssize_t chars_read = 0;
 	int status;
@@ -25,13 +25,6 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		{
 			lineptr[chars_read - 1] = '\0';
 		}
-		tmp = malloc(sizeof(*tmp) * chars_read);
-		if (tmp == NULL)
-		{
-			free(lineptr);
-			return (-1);
-		}
-		strcpy(tmp, lineptr);
 		token = strtok(lineptr, " \t\n\r");
 		i = 0;
 		while (i < n && token != NULL)
@@ -44,7 +37,6 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		if (strncmp(lineptr, "exit", 4) == 0)
 		{
 			free(lineptr);
-			free(tmp);
 			return (0);
 		}
 		args[i] = NULL;
@@ -62,6 +54,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 				}
 			if (execve(args[0], args, environ) == -1)
 			{
+				free(lineptr);
 				perror("./shell");
 			}
 			exit(0);
@@ -69,6 +62,5 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		wait(&status);
 	}
 	free(lineptr);
-	free(tmp);
 	return (0);
 }
