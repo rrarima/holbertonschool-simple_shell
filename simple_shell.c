@@ -5,7 +5,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 	size_t n = 0, i, num_of_tokens = 0;
 	char *lineptr, *tmp, *token;
 	pid_t child_pid;
-	ssize_t chars_read;
+	ssize_t chars_read = 0;
 	int status;
 
 	while (1)
@@ -42,9 +42,10 @@ int main(__attribute__((unused))int argc, char *argv[])
 			lineptr = NULL;
 			tmp = NULL;
 		}
-		free(lineptr);
-		if (strncmp(argv[0], "exit", 4) == 0)
+		if (strncmp(lineptr, "exit", 4) == 0)
 		{
+			free(lineptr);
+			free(tmp);
 			return (0);
 			free(lineptr);
 		}
@@ -57,7 +58,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 		}
 		else if (child_pid == 0)
 		{
-			if (strcmp(argv[0], "env") == 0)
+			if (strcmp(lineptr, "env") == 0)
 				{
 					print_env();
 					return (0);
@@ -72,5 +73,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 		free(tmp);
 		free(lineptr);
 	}
+	free(lineptr);
+	free(tmp);
 	return (0);
 }
