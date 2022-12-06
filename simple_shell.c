@@ -36,8 +36,10 @@ int main(__attribute__((unused))int argc, char *argv[])
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
 		}
-		if (strncmp(argv[0], "exit", 4) == 0)
+		if (strncmp(lineptr, "exit", 4) == 0)
 		{
+			free(lineptr);
+			free(tmp);
 			return (0);
 		}
 		argv[i] = NULL;
@@ -48,7 +50,7 @@ int main(__attribute__((unused))int argc, char *argv[])
 		}
 		else if (child_pid == 0)
 		{
-			if (strcmp(argv[0], "env") == 0)
+			if (strcmp(lineptr, "env") == 0)
 				{
 					print_env();
 					return (0);
@@ -62,5 +64,6 @@ int main(__attribute__((unused))int argc, char *argv[])
 		wait(&status);
 	}
 	free(lineptr);
+	free(tmp);
 	return (0);
 }
