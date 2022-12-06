@@ -19,7 +19,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 		if (chars_read == -1)
 		{
 			free(lineptr);
-			return (1);
+			return (-1);
 		}
 		if (lineptr[chars_read - 1] == '\n')
 		{
