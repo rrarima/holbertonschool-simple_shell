@@ -27,7 +27,6 @@ How to install and use Simple Simple Shell
 ```
 
 # Usage/Examples
-​
 ## Interactive Mode
 ​
 ​
