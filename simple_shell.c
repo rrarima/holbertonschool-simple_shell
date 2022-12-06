@@ -3,7 +3,7 @@
 int main(__attribute__((unused))int argc, char *argv[])
 {
 	size_t n = 0, i, num_of_tokens = 0;
-	char *lineptr = NULL, *tmp = NULL, *token;
+	char *lineptr, *tmp, *token;
 	pid_t child_pid;
 	ssize_t chars_read;
 	int status;
@@ -17,13 +17,12 @@ int main(__attribute__((unused))int argc, char *argv[])
 		chars_read = getline(&lineptr, &n, stdin);
 		if (chars_read == -1)
 		{
-			break;
+			free(lineptr);
+			return (0);
 		}
-		/*check last char of lineptr*/
 		tmp = malloc(sizeof(tmp) * chars_read);
 		if (tmp == NULL)
 		{
-			free(lineptr);
 			return (-1);
 		}
 		strcpy(tmp, lineptr);
@@ -35,6 +34,10 @@ int main(__attribute__((unused))int argc, char *argv[])
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
+			free(tmp);
+			free(lineptr);
+			lineptr = NULL;
+			tmp = NULL;
 		}
 		if (strncmp(argv[0], "exit", 4) == 0)
 		{
@@ -60,8 +63,8 @@ int main(__attribute__((unused))int argc, char *argv[])
 			exit(0);
 		}
 		wait(&status);
+		free(tmp);
+		free(lineptr);
 	}
-	free(tmp);
-	free(lineptr);
 	return (0);
 }
