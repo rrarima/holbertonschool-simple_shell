@@ -34,7 +34,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
 		}
-		if (strncmp(lineptr, "exit", 4) == 0)
+		if (strncmp(lineptr, "exit", 4) != -1)
 		{
 			free(lineptr);
 			return (0);
