@@ -26,6 +26,7 @@ int main(void)
 		}
 		token = strtok(lineptr, " \t\n\r");
 		if (token != NULL)
+		{
 			i = 0;
 			while (i < n && token != NULL)
 			{
@@ -37,7 +38,7 @@ int main(void)
 			if (strncmp(lineptr, "exit", 4) == 0)
 			{
 				free(lineptr);
-				exit(2);
+				exit(EXIT_SUCCESS);
 			}
 			args[i] = NULL;
 			child_pid = fork();
