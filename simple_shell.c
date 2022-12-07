@@ -37,7 +37,7 @@ int main(void)
 			if (strncmp(lineptr, "exit", 4) == 0)
 			{
 				free(lineptr);
-				exit(EXIT_SUCCESS);
+				exit(2);
 			}
 			args[i] = NULL;
 			child_pid = fork();
