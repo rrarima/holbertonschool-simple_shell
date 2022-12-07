@@ -25,40 +25,43 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 			lineptr[chars_read - 1] = '\0';
 		}
 		token = strtok(lineptr, " \t\n\r");
-		i = 0;
-		while (i < n && token != NULL)
+		if (token != NULL)
 		{
-			args[i] = token;
-			token = strtok(NULL, " \t\n\r");
-			i = i + 1;
-			num_of_tokens = num_of_tokens + 1;
-		}
-		if (strncmp(lineptr, "exit", 4) == 0)
-		{
-			free(lineptr);
-			exit(EXIT_SUCCESS);
-		}
-		args[i] = NULL;
-		child_pid = fork();
-		if (child_pid < 0)
-		{
-			exit(EXIT_SUCCESS);
-		}
-		else if (child_pid == 0)
-		{
-			if (strcmp(lineptr, "env") == 0)
+			i = 0;
+			while (i < n && token != NULL)
+			{
+				args[i] = token;
+				token = strtok(NULL, " \t\n\r");
+				i = i + 1;
+				num_of_tokens = num_of_tokens + 1;
+			}
+			if (strncmp(lineptr, "exit", 4) == 0)
+			{
+				free(lineptr);
+				exit(EXIT_SUCCESS);
+			}
+			args[i] = NULL;
+			child_pid = fork();
+			if (child_pid < 0)
+			{
+				exit(EXIT_SUCCESS);
+			}
+			else if (child_pid == 0)
+			{
+				if (strcmp(lineptr, "env") == 0)
 				{
 					print_env();
 					return (0);
 				}
-			if (execve(args[0], args, environ) == -1)
-			{
-				free(lineptr);
-				perror("./shell");
+				if (execve(args[0], args, environ) == -1)
+				{
+					free(lineptr);
+					perror("./shell");
+				}
+				exit(EXIT_SUCCESS);
 			}
-			exit(EXIT_SUCCESS);
+			wait(&status);
 		}
-		wait(&status);
 	}
 	free(lineptr);
 	return (0);
