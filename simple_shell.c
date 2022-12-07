@@ -51,6 +51,7 @@ int main(void)
 				if (strcmp(lineptr, "env") == 0)
 				{
 					print_env();
+					free(lineptr);
 					return (0);
 				}
 				if (execve(args[0], args, environ) == -1)
