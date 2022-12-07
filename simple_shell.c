@@ -44,13 +44,14 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 			child_pid = fork();
 			if (child_pid < 0)
 			{
-				exit(EXIT_SUCCESS);
+				exit(EXIT_FAILURE);
 			}
 			else if (child_pid == 0)
 			{
 				if (strcmp(lineptr, "env") == 0)
 				{
 					print_env();
+					free(lineptr);
 					return (0);
 				}
 				if (execve(args[0], args, environ) == -1)
