@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
+int main(void)
 {
 	size_t n = 0, i, num_of_tokens = 0;
 	char *lineptr = NULL, *token = NULL;
@@ -44,7 +44,7 @@ int main(__attribute__((unused))int argc, __attribute__((unused))char *argv[])
 			child_pid = fork();
 			if (child_pid < 0)
 			{
-				exit(EXIT_SUCCESS);
+				exit(EXIT_FAILURE);
 			}
 			else if (child_pid == 0)
 			{
