@@ -1,6 +1,6 @@
 #include "main.h"
 
-void parse_input(char *lineptr, char *args[], size_t n)
+void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read, pid_t *child_pid, int *status)
 {
 	char *token = strtok(lineptr, " \t\n\r");
 
@@ -28,5 +28,25 @@ void parse_input(char *lineptr, char *args[], size_t n)
 		exit(EXIT_SUCCESS);
 		}
 		args[i] = NULL;
+		*child_pid = fork();
+		if (*child_pid < 0)
+		{
+		exit(EXIT_FAILURE);
+		}
+		else if (*child_pid == 0)
+		{
+			if (strcmp(lineptr, "env") == 0)
+			{
+				print_env();
+				free(lineptr);
+			}
+			if (execve(args[0], args, environ) == -1)
+			{
+				free(lineptr);
+				perror("./shell");
+			}
+			exit(EXIT_SUCCESS);
+		}
+		wait(status);
 	}
 }
