@@ -2,11 +2,9 @@
 
 int main(void)
 {
-	size_t n = 0, i, num_of_tokens = 0;
+	size_t n = 0, i;
 	char *lineptr = NULL, *token = NULL;
-	pid_t child_pid;
 	ssize_t chars_read = 0;
-	int status;
 	char *args[64];
 
 	while (1)
@@ -33,35 +31,13 @@ int main(void)
 				args[i] = token;
 				token = strtok(NULL, " \t\n\r");
 				i = i + 1;
-				num_of_tokens = num_of_tokens + 1;
 			}
 			if (strncmp(lineptr, "exit", 4) == 0)
 			{
-				free(lineptr);
-				exit(EXIT_SUCCESS);
+				exit_func(lineptr);
 			}
 			args[i] = NULL;
-			child_pid = fork();
-			if (child_pid < 0)
-			{
-				exit(EXIT_FAILURE);
-			}
-			else if (child_pid == 0)
-			{
-				if (strcmp(lineptr, "env") == 0)
-				{
-					print_env();
-					free(lineptr);
-					return (0);
-				}
-				if (execve(args[0], args, environ) == -1)
-				{
-					free(lineptr);
-					perror("./shell");
-				}
-				exit(EXIT_SUCCESS);
-			}
-			wait(&status);
+			fork_child(lineptr, args);
 		}
 	}
 	free(lineptr);
