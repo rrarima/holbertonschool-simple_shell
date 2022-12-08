@@ -22,32 +22,19 @@ void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read, pid_
 			i = i + 1;
 			num_of_tokens = num_of_tokens + 1;
 		}
+		if (strncmp(lineptr, "exit", 4) != 0 && strcmp(lineptr, "env") != 0)
+		{
+			printf("Invalid built-in command: %s\n", lineptr);
+			free(lineptr);
+			exit(2);
+		}
 		if (strncmp(lineptr, "exit", 4) == 0)
 		{
-		free(lineptr);
-		exit(EXIT_SUCCESS);
-		}
-		args[i] = NULL;
-		*child_pid = fork();
-		if (*child_pid < 0)
-		{
-		exit(EXIT_FAILURE);
-		}
-		else if (*child_pid == 0)
-		{
-			if (strcmp(lineptr, "env") == 0)
-			{
-				print_env();
-				free(lineptr);
-			}
-			if (execve(args[0], args, environ) == -1)
-			{
-				free(lineptr);
-				perror("./shell");
-			}
+			free(lineptr);
 			exit(EXIT_SUCCESS);
 		}
-		wait(status);
+		args[i] = NULL;
+		fork_child(lineptr, args);
 	}
 }
 

@@ -22,12 +22,16 @@ void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read)
 			num_of_tokens = num_of_tokens + 1;
 		}
 		token = strtok(NULL, " \t\n\r");
+		args[i] = NULL;
+		fork_child(lineptr, args);
 		if (strncmp(lineptr, "exit", 4) == 0)
 		{
 			free(lineptr);
 			exit(EXIT_SUCCESS);
 		}
-		args[i] = NULL;
-		fork_child(lineptr, args);
+		else
+		{
+			exit(2);
+		}
 	}
 }
