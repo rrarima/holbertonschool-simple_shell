@@ -9,34 +9,31 @@ VALGRIND=valgrind
 VFLAGS= --leak-check=full --show-leak-kinds=all ./hsh
 
 TARGET=hsh
-SRC0=	_getenv.c \
-	print_env.c\
-	read_input.c\
-	parse_input.c\
-	fork_child.c\
-	ll_path.c\
-	simple_shell.c
-
-TARGET=hsh
-SRC1=	func.c \
-	simple_shell.c
-
+SRC0=    _getenv.c \
+    argarr.c \
+    save_path.c \
+    shell.c \
+    string_func.c \
+    find_command.c \
+    can_exec.c \
+    fork_exec.c \
+    print_error.c \
+    builtin.c \
+    _env.c
 
 # shell hsh
 all: 0
 
 0:
-	$(CC) $(CFLAGS) $(SRC0) -o $(TARGET)
-
-1:
-	$(CC) $(CFLAGS) $(SRC1) -o $(TARGET)
+    $(CC) $(CFLAGS) $(SRC0) -o $(TARGET)
 
 clean:
-	$(RM) *~ \#*\# \.\#* \
-	$(TARGET)
+    $(RM) *~ \#*\# \.\#* \
+    $(TARGET)
 
 betty:
-	$(BETTY) $(SRC0)
+    $(BETTY) $(SRC0)
 
 val:
-	$(VALGRIND) $(VFLAGS)
+    $(VALGRIND) $(VFLAGS)
+

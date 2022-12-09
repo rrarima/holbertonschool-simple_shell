@@ -28,9 +28,11 @@ char *_getenv(const char *name);
 int _strlen(const char *s);
 int _strcmp(char *s1, char *s2);
 void print_env(void);
-void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read);
-void read_input(char **lineptr, size_t *n, ssize_t *chars_read);
-int fork_child(char *lineptr, char *args[]);
 listpathdir_t *ll_path(char *PATH);
-char **split_delim(char *s, const char *delim);
+void split_delim(char *s, const char *delim, char *whole_path[]);
+void exit_func(char *lineptr);
+int parse_input(char *lineptr, char *args[], ssize_t chars_read, int *exit_code);
+void read_input(char **lineptr, size_t *n, ssize_t *chars_read);
+int fork_child(char *lineptr, char *args[], int *exit_code);
+char *access_check(listpathdir_t *head, char *argv_0);
 #endif

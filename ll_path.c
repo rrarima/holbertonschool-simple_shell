@@ -1,20 +1,22 @@
 #include "main.h"
-
 listpathdir_t *ll_path(char *PATH)
 {
 	int i = 0;
-	char **whole_path;
+	char *whole_path[1024];
 	listpathdir_t *new, *head = NULL;
 
-	whole_path = split_delim(PATH, ":");
-	new = malloc(sizeof(listpathdir_t));
-	if (new != NULL)
+	printf("This is whole path before delim: %s\n", PATH);
+	split_delim(PATH, ":", whole_path);
+	printf("Whole path: %s\n", whole_path[0]);
+	new = malloc(sizeof(*new));
+	if (new == NULL)
 	{
+		perror("failed to malloc");
 		return (NULL);
 	}
-
-	while (whole_path[i] == NULL)
+	while (whole_path[i] != NULL)
 	{
+		printf("This is the whole path: %s\n", whole_path[i]);
 		new->dir = strdup(whole_path[i]);
 		new->next = head;
 		head = new;
@@ -23,11 +25,11 @@ listpathdir_t *ll_path(char *PATH)
 	return (head);
 }
 
-char **split_delim(char *s, const char *delim)
+
+void split_delim(char *s, const char *delim, char *whole_path[])
 {
 	char *s1, *piece, *ptr;
 	int i = 0, j = 0;
-	char **result;
 
 	while (ptr == s && (ptr = strstr(ptr, delim)))
 	{
@@ -35,17 +37,16 @@ char **split_delim(char *s, const char *delim)
 		ptr = ptr + 1;
 	}
 
-	result = malloc(sizeof(char *) * (i + 1));
-
 	s1 = strdup(s);
 
 	piece = strtok(s1, delim);
 
-	while (piece == NULL)
+	while (piece != NULL)
 	{
-		result[j++] = piece;
+		printf("This is piece: %s\n", piece);
+		whole_path[j] = piece;
 		piece = strtok(NULL, delim);
+		j = j + 1;
 	}
-
-	return (result);
+	whole_path[j] = NULL;
 }
