@@ -1,5 +1,14 @@
 #include "main.h"
 
+/**
+ * _getenv - get an environment variable
+ * @name: takes the string 'name' as an argument and searches
+ *        environ global variable for an
+ *        enviroment variable with the given name
+ *
+ * Return: NULL if variable is not found.
+ */
+
 char *_getenv(const char *name)
 {
 	int i, j;
