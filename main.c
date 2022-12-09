@@ -6,7 +6,6 @@ int main(void)
 	size_t n = 0;
 	ssize_t chars_read = 0;
 	char *args[1024];
-	pid_t child_pid;
 	int status;
 
 	while (1)
@@ -20,14 +19,19 @@ int main(void)
 		{
 			break;
 		}
-		parse_input(lineptr, args, n, chars_read, &child_pid, &status);
+		parse_input(lineptr, args, n, chars_read);
+		if(WIFEXITED(status))
+		{
+			printf("exit status of child=%d\n",WEXITSTATUS(status));
+		}
 	}
 	free(lineptr);
 	return (0);
 }
 
-void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read, pid_t *child_pid, int *status)
+void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read)
 {
+	size_t i;
 	char *token = strtok(lineptr, " \t\n\r");
 
 	if (lineptr[chars_read - 1] == '\n')
@@ -36,13 +40,12 @@ void parse_input(char *lineptr, char *args[], size_t n, ssize_t chars_read, pid_
 	}
 	if (token != NULL)
 	{
-		size_t i = 0, num_of_tokens = 0;
+		i = 0;
 		while (i < n && token != NULL)
 		{
 			args[i] = token;
 			token = strtok(NULL, " \t\n\r");
 			i = i + 1;
-			num_of_tokens = num_of_tokens + 1;
 		}
 		if (strncmp(lineptr, "exit", 4) == 0)
 		{
@@ -68,12 +71,11 @@ void print_env(void)
 int fork_child(char *lineptr, char *args[])
 {
 	pid_t child_pid;
-	int status;
 
 	child_pid = fork();
 	if (child_pid < 0)
 	{
-		exit(EXIT_FAILURE);
+	        exit(EXIT_FAILURE);
 	}
 	else if (child_pid == 0)
 	{
@@ -83,6 +85,15 @@ int fork_child(char *lineptr, char *args[])
 			free(lineptr);
 			return (0);
 		}
+		if (strcmp(args[0], "ls") == 0)
+		{
+			char *ls_args[] = {"ls", NULL};
+			if (execve("/bin/ls", ls_args, environ) == -1)
+			{
+				free(lineptr);
+				perror("./shell");
+			}
+		}
 		if (execve(args[0], args, environ) == -1)
 		{
 			free(lineptr);
@@ -90,6 +101,6 @@ int fork_child(char *lineptr, char *args[])
 		}
 		exit(EXIT_SUCCESS);
 	}
-	wait(&status);
-	return (child_pid);
+	wait(&child_pid);
+	return (0);
 }
