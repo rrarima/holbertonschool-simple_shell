@@ -3,7 +3,7 @@
 int fork_child(char *lineptr, char *args[])
 {
 	pid_t child_pid;
-	int status;
+
 	child_pid = fork();
 	if (child_pid < 0)
 	{
@@ -26,16 +26,13 @@ int fork_child(char *lineptr, char *args[])
 				perror("./shell");
 			}
 		}
-		else
+		if (execve(args[0], args, environ) == -1)
 		{
-			if (execve(args[0], args, environ) == -1)
-			{
-				free(lineptr);
-				perror("./shell");
-			}
+			free(lineptr);
+			perror("./shell");
 		}
 		exit(EXIT_SUCCESS);
 	}
-	wait(&status);
-	return (child_pid);
+	wait(&child_pid);
+	return (0);
 }
