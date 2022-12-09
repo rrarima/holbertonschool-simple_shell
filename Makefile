@@ -14,6 +14,7 @@ SRC0=	_getenv.c \
 	read_input.c\
 	parse_input.c\
 	fork_child.c\
+	ll_path.c\
 	simple_shell.c
 
 TARGET=hsh
