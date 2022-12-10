@@ -35,4 +35,5 @@ int parse_input(char *lineptr, char *args[], ssize_t chars_read, int *exit_code)
 void read_input(char **lineptr, size_t *n, ssize_t *chars_read);
 int fork_child(char *lineptr, char *args[], int *exit_code);
 char *access_check(listpathdir_t *head, char *argv_0);
+void process_input(char *lineptr, size_t n, int *exit_code);
 #endif

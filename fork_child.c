@@ -8,7 +8,7 @@ int fork_child(char *lineptr, char *args[], int *exit_code)
 	child_pid = fork();
 	if (child_pid < 0)
 	{
-	        exit(EXIT_FAILURE);
+		exit(EXIT_FAILURE);
 	}
 	else if (child_pid == 0)
 	{
@@ -18,6 +18,7 @@ int fork_child(char *lineptr, char *args[], int *exit_code)
 			free(lineptr);
 			return (0);
 		}
+		printf("This is args[0] %s\n", args[0]);
 		if (execve(args[0], args, environ) == -1)
 		{
 			perror("./shell");
@@ -29,6 +30,7 @@ int fork_child(char *lineptr, char *args[], int *exit_code)
 		if(WIFEXITED(status))
 		{
 			*exit_code = WEXITSTATUS(status);
+			printf("exit status of child=%d\n",WEXITSTATUS(status));
 		}
 	}
 	return (0);
