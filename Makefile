@@ -18,10 +18,20 @@ SRC0=	_getenv.c \
 	proc_input.c\
 	simple_shell.c
 
+TARGET=hsh
+SRC1=	_getenv.c \
+	ll_path.c\
+	access_check.c\
+	main.c
+
 all: 0
 
 0:
 	$(CC) $(CFLAGS) $(SRC0) -o $(TARGET)
+
+1:
+	$(CC) $(CFLAGS) $(SRC1) -o $(TARGET)
+
 
 clean:
 	$(RM) *~ \#*\# \.\#* \
