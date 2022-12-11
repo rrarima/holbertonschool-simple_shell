@@ -1,6 +1,6 @@
 #include "main.h"
 
-int fork_child(char *lineptr, char *args[])
+int fork_child(char *lineptr, char *args[], int *exit_code)
 {
 	pid_t child_pid;
 	int status;
@@ -20,11 +20,16 @@ int fork_child(char *lineptr, char *args[])
 		}
 		if (execve(args[0], args, environ) == -1)
 		{
-			free(lineptr);
 			perror("./shell");
 		}
-		exit(EXIT_SUCCESS);
 	}
-	wait(&status);
-	return (child_pid);
+	else
+	{
+		wait(&status);
+		if (WIFEXITED(status))
+		{
+			*exit_code = WEXITSTATUS(status);
+		}
+	}
+	return (0);
 }
