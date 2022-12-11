@@ -2,10 +2,11 @@
 
 int main(void)
 {
-	size_t n = 0, i;
-	char *lineptr = NULL, *token = NULL;
+	listpathdir_t *head;
+	char *lineptr = NULL, *path, *command_path, *args[1024];
+	size_t n = 0;
 	ssize_t chars_read = 0;
-	char *args[64];
+	int exit_code = 0;
 
 	while (1)
 	{
@@ -18,26 +19,33 @@ int main(void)
 		{
 			break;
 		}
-		if (lineptr[chars_read - 1] == '\n')
+		if (parse_input(lineptr, args, chars_read, &exit_code) == 0)
 		{
-			lineptr[chars_read - 1] = '\0';
-		}
-		token = strtok(lineptr, " \t\n\r");
-		if (token != NULL)
-		{
-			i = 0;
-			while (i < n && token != NULL)
+			if (*args[0] == '/')
 			{
-				args[i] = token;
-				token = strtok(NULL, " \t\n\r");
-				i = i + 1;
+				if (access(args[0], F_OK | X_OK) == 0)
+				{
+					fork_child(lineptr, args, &exit_code);
+				}
 			}
-			if (strncmp(lineptr, "exit", 4) == 0)
+			else
 			{
-				exit_func(lineptr);
+				path = _getenv("PATH");
+				head = ll_path(path);
+				command_path = access_check(head, args[0]);
+				if (command_path == args[0])
+				{
+					if (access(args[0], F_OK | X_OK) == 0)
+					{
+						fork_child(lineptr, args, &exit_code);
+					}
+				}
+				else
+				{
+					args[0] = command_path;
+					fork_child(lineptr, args, &exit_code);
+				}
 			}
-			args[i] = NULL;
-			fork_child(lineptr, args);
 		}
 	}
 	free(lineptr);
