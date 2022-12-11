@@ -1,5 +1,15 @@
 #include "main.h"
 
+/**
+ * main - Entry point of program.
+ *        main function initializes the lineptr buffer and the args array,
+ *        then enters a loop that reads input, parses it, and executes the
+ *        command specified by the input.
+ *
+ * Return: 0 if the program ran successfully or exits when
+ *         when read_input returns an error.
+  */
+
 int main(void)
 {
 	char *lineptr = NULL;
@@ -10,7 +20,7 @@ int main(void)
 	while (1)
 	{
 		read_input(&lineptr, &n, &chars_read);
-		if(chars_read == -1)
+		if (chars_read == -1)
 		{
 			break;
 		}
@@ -18,5 +28,5 @@ int main(void)
 	}
 
 	free(lineptr);
-	return 0;
+	return (0);
 }

@@ -1,5 +1,17 @@
 #include "main.h"
 
+/**
+ * fork_child - This function creates a child process using fork.
+ *              It will attempt to execute the command specified by the
+ *              first argument using execve.
+ *
+ * @lineptr: A pointer to the buffer that holds the input line
+ * @args: Array of pointers to the individual arguemnts in the input line
+ *
+ * Return: 0 on success. If any of these fail, the function prints
+ *         an error message and exit's the program.
+ */
+
 int fork_child(char *lineptr, char *args[])
 {
 	pid_t child_pid;
@@ -20,6 +32,7 @@ int fork_child(char *lineptr, char *args[])
 		if (strcmp(args[0], "ls") == 0)
 		{
 			char *ls_args[] = {"ls", NULL};
+
 			if (execve("/bin/ls", ls_args, environ) == -1)
 			{
 				free(lineptr);

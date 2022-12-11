@@ -1,21 +1,18 @@
-#include <stdio.h>
-#include <unistd.h>
+#include "main.h"
 
 /**
- * main - prints the environment
+ * print_env - print all or part of environment
  *
- * Return: Always 0.
+ *
  */
-
-extern char **environ;
 
 void print_env(void)
 {
-    unsigned int i = 0;
+	unsigned int i = 0;
 
-    while (environ[i] != NULL)
-    {
-	    printf("%s\n", environ[i]);
-	    i = i + 1;
-    }
+	while (environ[i] != NULL)
+	{
+		printf("%s\n", environ[i]);
+		i = i + 1;
+	}
 }
